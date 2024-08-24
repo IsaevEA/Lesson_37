@@ -9,12 +9,6 @@ public class Theater <K,V extends Person> {
     private K index;
     private V [] person;
     private Map <K,ArrayList<V>> map = new HashMap<>();
-    Client [] clients = new Client[16];
-    Critic [] critics = new Critic[16];
-    Staff [] staff = new Staff[16];
-    int countClient = 0;
-    int countCritic = 0;
-    int countStaff = 0;
 
 
 
@@ -28,25 +22,30 @@ public class Theater <K,V extends Person> {
                 '}';
     }
 
-    public void checkTicket(){
+    public void checkTicket() {
         for (int i = 0; i < map.size(); i++) {
-
+            K key = (K) map.keySet().toArray()[i];
+            ArrayList<V> peopleList = map.get(key);
+            if (peopleList != null) {
+                for (int j = 0; j < peopleList.size(); j++) {
+                    System.out.println( "ряд: " + (i+1) + ", место: " + (j + 1 ) + ", " + peopleList.get(j));
+                }
+            }
         }
     }
 
 
-    public void deletePerson(int num, int index)  {
 
-    }
-    public void addPersonToLine(Person person){
-        if (person instanceof Client){
-            map.get(0).add((V) person);
-        } else if (person instanceof Critic) {
-            map.get(1).add((V) person);
-        } else if (person instanceof Staff) {
-            map.get(2).add((V) person);
+
+    public void addPersonToLine(Person person) {
+        ArrayList<V> peopleList = map.get(person.getClass());
+        if (peopleList == null) {
+            peopleList = new ArrayList<>();
+            map.put((K) person.getClass(), peopleList);
         }
+        peopleList.add((V) person);
     }
+
 
 
     public K getIndex() {
@@ -72,4 +71,5 @@ public class Theater <K,V extends Person> {
     public void setMap(Map<K, ArrayList<V>> map) {
         this.map = map;
     }
+
 }
